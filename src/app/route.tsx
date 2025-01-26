@@ -25,68 +25,59 @@ const tokenInfo: TokenInfo = {
 };
 
 function formatNumber(number: number) {
+	const opts: Intl.NumberFormatOptions = {
+		style: 'currency',
+		currency: 'USD',
+		maximumFractionDigits: 0,
+		minimumFractionDigits: 0,
+	};
+
 	// if greater than 1M, use M
 	if (number >= 1000000) {
-		return (
-			new Intl.NumberFormat('en-US', {
-				style: 'currency',
-				currency: 'USD',
-				maximumFractionDigits: 0,
-				minimumFractionDigits: 0,
-			}).format(number / 1000000) + 'M'
-		);
+		return new Intl.NumberFormat('en-US', opts).format(number / 1000000) + 'M';
 	}
 
 	// if greater than 1000, use K
 	if (number >= 1000) {
-		return (
-			new Intl.NumberFormat('en-US', {
-				style: 'currency',
-				currency: 'USD',
-				maximumFractionDigits: 0,
-				minimumFractionDigits: 0,
-			}).format(number / 1000) + 'K'
-		);
+		return new Intl.NumberFormat('en-US', opts).format(number / 1000) + 'K';
 	}
 
-	return new Intl.NumberFormat('en-US', {
-		style: 'currency',
-		currency: 'USD',
-		maximumFractionDigits: 0,
-	}).format(number);
+	return new Intl.NumberFormat('en-US', opts).format(number);
 }
 
 function formatPctChange(number: number) {
+	const opts: Intl.NumberFormatOptions = {
+		style: 'percent',
+		maximumFractionDigits: 0,
+		minimumFractionDigits: 0,
+	};
+
 	if (number > 0) {
 		return (
 			<span style={{ color: 'green', marginLeft: 8 }}>
-				+
-				{new Intl.NumberFormat('en-US', {
-					style: 'percent',
-					maximumFractionDigits: 0,
-					minimumFractionDigits: 0,
-				}).format(number)}
+				+{new Intl.NumberFormat('en-US', opts).format(number)}
 			</span>
 		);
 	}
 
 	return (
 		<span style={{ color: 'red', marginLeft: 8 }}>
-			{new Intl.NumberFormat('en-US', {
-				style: 'percent',
-				maximumFractionDigits: 0,
-				minimumFractionDigits: 0,
-			}).format(number)}
+			{new Intl.NumberFormat('en-US', opts).format(number)}
 		</span>
 	);
 }
 
 export async function GET() {
+	// Simulate db call with a 1 second delay
 	await new Promise((resolve) => setTimeout(resolve, 1000));
 
 	return new ImageResponse(
 		(
-			<div className='shrin' tw='flex flex-col'>
+			<div
+				style={{
+					display: 'flex',
+					flexDirection: 'column',
+				}}>
 				<div
 					style={{
 						display: 'flex',
